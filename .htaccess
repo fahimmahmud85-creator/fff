@@ -1,0 +1,26 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1. Security: Block public access to source files and configuration
+  RedirectMatch 404 ^/\.env$
+  RedirectMatch 404 ^/\.git
+  RedirectMatch 404 ^/src/
+  RedirectMatch 404 ^/tsconfig\.json$
+  RedirectMatch 404 ^/vite\.config\.ts$
+  RedirectMatch 404 ^/package-lock\.json$
+  RedirectMatch 404 ^/package\.json$
+
+  # 2. Rewrite root path to dist/index.html
+  RewriteRule ^$ dist/index.html [L]
+
+  # 3. Transparently rewrite requests for compiled assets/files inside /dist
+  RewriteCond %{REQUEST_URI} !^/dist/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ dist/$1 [L]
+
+  # 4. Handle client-side routing fallback (for SPA page refreshes)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ dist/index.html [L]
+</IfModule>

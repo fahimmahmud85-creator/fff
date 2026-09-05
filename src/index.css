@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Montserrat:wght@400;500;600;700&family=Lato:wght@400;700&family=Dancing+Script:wght@600;700&family=Caveat:wght@600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-orange: #FF6B00;
+  --font-sans: "Open Sans", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-cursive: "Dancing Script", cursive;
+}
+
+/* Custom helper classes for the Geometric Balance theme */
+
+.geometric-border {
+  border-left: 4px solid var(--color-brand-orange);
+}
+
+.geometric-border-slate {
+  border-left: 4px solid var(--color-slate-300);
+}
+
+.hexagon-clip {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Printers and PDF styling layout overrides */
+@media print {
+  @page {
+    margin: 5mm !important; /* Re-establish outer margin for clean physical paper framing */
+    size: landscape;
+  }
+
+  /* Scale the whole viewport layout to guarantee it fits on any standard A4 or Letter physical sheet */
+  html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: white !important;
+    color: black !important;
+    font-size: 11px !important;
+    zoom: 100% !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    counter-reset: page;
+  }
+
+  /* Outer frame for every printed page container */
+  #printable-qc-cert {
+    border: none !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+  }
+
+  .cert-page {
+    page-break-after: always !important;
+    break-after: page !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+    position: relative !important;
+  }
+
+  .cert-page.mtc1-landscape {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 196mm !important;
+    min-height: 196mm !important;
+    max-height: 196mm !important;
+    margin: 0 0 0 0 !important;
+    padding: 3mm !important;
+    border: 3px double #000000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .cert-page:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Allow page breaks inside tbody outer tr/td for multi-page document flow */
+  tr.allow-page-break,
+  td.allow-page-break {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  tbody {
+    display: table-row-group !important;
+  }
+  
+  .no-print, 
+  button, 
+  input[type="button"], 
+  input[type="submit"], 
+  select,
+  textarea,
+  a,
+  header,
+  footer,
+  aside,
+  nav,
+  .no-print-container {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Show only print-friendly container layouts and expand full width */
+  .print-area, 
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  table {
+    page-break-inside: auto;
+    break-inside: auto;
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+  }
+  
+  thead {
+    display: table-header-group !important;
+  }
+
+  thead tr {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+  
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .print-section-block {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Prevent browser-printed visual table wrapper from causing vertical line leaks and clipping at page breaks */
+  .screen-print-items-container {
+    border: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure a solid clean border box around the printed viewport table cells on page splits */
+  .screen-print-items-table {
+    border-collapse: collapse !important;
+    border: 1px solid black !important;
+  }
+  .screen-print-items-table th,
+  .screen-print-items-table td {
+    border: 1px solid black !important;
+  }
+  .screen-print-items-table tr:first-child th {
+    border-top: 1px solid black !important;
+  }
+  .screen-print-items-table tr:last-child td {
+    border-bottom: 1px solid black !important;
+  }
+  .screen-print-items-table th:first-child,
+  .screen-print-items-table td:first-child {
+    border-left: 1px solid black !important;
+  }
+  .screen-print-items-table th:last-child,
+  .screen-print-items-table td:last-child {
+    border-right: 1px solid black !important;
+  }
+
+  /* Push footer sums grid (amounts in words, subtotal, VAT) and signatures block cleanly to the 2nd page on print for PO/PR sheets */
+  .footer-grid-break {
+    page-break-before: always !important;
+    break-before: always !important;
+    border-top: 2px solid black !important;
+  }
+
+  /* Force background colors and borders to render in PDF exports */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+@keyframes marqueeSlowState {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marqueeSlowState 90s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+/* Custom premium scrollbars for scrollable sidebar and modules */
+.custom-sidebar-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 9999px;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(243, 112, 33, 0.2);
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(243, 112, 33, 0.65);
+}
+
+/* Disable spin buttons for number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Global compact typography scaling */
+html {
+  font-size: 13px !important;
+}
+
+body, button, input, select, textarea {
+  font-size: 0.875rem !important;
+}
+
+
+/* ==========================================================================
+   TROJAN / BOX-SHAPED BLUE GRID SPECIFIC OVERRIDES FOR INVENTORY & ERP
+   ========================================================================== */
+
+/* Target elements with class .box-shaped or inside .box-shaped containers */
+.box-shaped, .box-shaped * {
+  border-radius: 0px !important; /* Force perfectly sharp corners */
+}
+
+/* Sharp inputs, dropdowns and filters in the inventory and ERP */
+.box-shaped input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]),
+.box-shaped select,
+.box-shaped textarea {
+  border-radius: 0px !important;
+  border: 1px solid #A9A9A9 !important;
+  background-color: #ffffff !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  height: auto !important;
+  min-height: unset !important;
+  outline: none !important;
+}
+
+/* Ensure inputs inside table cells in box-shaped containers are borderless and transparent unless focused */
+.box-shaped table td input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]),
+.box-shaped-table td input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]) {
+  border: 1px solid transparent !important;
+  background-color: transparent !important;
+  padding: 2px 4px !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  font-weight: inherit !important;
+  width: 100% !important;
+  height: auto !important;
+  box-shadow: none !important;
+}
+
+.box-shaped table td input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):hover,
+.box-shaped-table td input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):hover {
+  background-color: rgba(243, 112, 33, 0.05) !important;
+}
+
+.box-shaped table td input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):focus,
+.box-shaped-table td input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):focus {
+  border: 1px solid #f37021 !important;
+  background-color: #ffffff !important;
+}
+
+.box-shaped input:focus, .box-shaped select:focus, .box-shaped textarea:focus {
+  border-color: #002D62 !important;
+}
+
+/* Sharp corporate flat buttons inside box-shaped containers */
+.box-shaped button,
+.box-shaped .btn {
+  border-radius: 0px !important;
+  font-weight: 500 !important;
+}
+
+/* Solid Matrix grid table representation as shown in screenshot */
+.box-shaped table,
+.box-shaped-table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  border: 1px solid #A6C4DE !important;
+  margin-bottom: 1rem;
+}
+
+/* Table headers: Prussian Blue background, white text, centered, sharp as shown in screenshot */
+.box-shaped th,
+.box-shaped-table th,
+.box-shaped .table-header,
+.box-shaped-table .table-header {
+  background-color: #083c54 !important; /* Prussian Blue from screenshot */
+  color: #ffffff !important; /* Solid White */
+  font-size: 11px !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  padding: 6px 8px !important;
+  border: 1px solid #052a3a !important;
+  text-transform: none !important; /* Keep original casing from code/image */
+}
+
+/* Table cells: Standard flat white background, dark black text, sharp, regular font weight (non-bold) */
+.box-shaped td,
+.box-shaped-table td,
+.box-shaped .table-cell,
+.box-shaped-table .table-cell {
+  background-color: #ffffff !important;
+  color: #000000 !important; /* Dark/black color for readability */
+  font-size: 11px !important;
+  font-weight: normal !important; /* Non-bold text values */
+  padding: 5px 8px !important;
+  border: 1px solid #A6C4DE !important;
+}
+
+/* Zebra striping for readability */
+.box-shaped tr:nth-child(even) td,
+.box-shaped-table tr:nth-child(even) td {
+  background-color: #F8FAFD !important;
+}
+
+/* Specific Trojan buttons matching search / reset in the screenshot */
+.btn-trojan-search {
+  background-color: #002D62 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 5px 20px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  cursor: pointer;
+}
+.btn-trojan-search:hover {
+  background-color: #1F4E79 !important;
+}
+
+.btn-trojan-reset {
+  background-color: #1F4E79 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 5px 20px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  cursor: pointer;
+}
+.btn-trojan-reset:hover {
+  background-color: #1A5276 !important;
+}

@@ -1,0 +1,9 @@
+node_modules/
+build/
+# Comment out dist/ for Hostinger direct Git deployment so built assets can be pushed and hosted
+# dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example

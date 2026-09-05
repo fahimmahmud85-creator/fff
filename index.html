@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marine Fasteners Stock Management & ERP Portal</title>
+    <script>
+      (function() {
+        var isBenign = function(msg, lineno, colno) {
+          if (lineno === 0 || colno === 0) return true;
+          if (!msg) return false;
+          var str = String(msg).toLowerCase();
+          return (
+            str.indexOf('script error') !== -1 ||
+            str.indexOf('resizeobserver') !== -1 ||
+            str.indexOf('websocket') !== -1 ||
+            str.indexOf('hmr') !== -1 ||
+            str.indexOf('vite') !== -1 ||
+            str.indexOf('networkerror') !== -1 ||
+            str.indexOf('failed to fetch') !== -1 ||
+            str.indexOf('socket') !== -1
+          );
+        };
+        window.addEventListener('error', function(e) {
+          var msg = (e && (e.message || (e.error && e.error.message))) || '';
+          if (isBenign(msg, e ? e.lineno : 0, e ? e.colno : 0)) {
+            if (e) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+            }
+            return false;
+          }
+        }, true);
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = e && e.reason;
+          var msg = typeof reason === 'string' ? reason : ((reason && reason.message) || '');
+          if (isBenign(msg, 0, 0)) {
+            if (e) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+            }
+            return false;
+          }
+        }, true);
+        var origOnError = window.onerror;
+        window.onerror = function(msg, url, lineno, colno, error) {
+          if (isBenign(msg, lineno, colno)) {
+            return true;
+          }
+          if (origOnError) return origOnError.apply(this, arguments);
+          return false;
+        };
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
